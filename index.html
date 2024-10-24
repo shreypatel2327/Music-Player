@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="icon" href="https://img.icons8.com/?size=100&id=gO4rmDWxkRD6&format=png&color=000000" >
+      
 </head>
 
 <body>
@@ -34,9 +36,9 @@
             <input type="range" value="0" id="progress">
 
             <div class="controls">
-                <div><i class="fa-solid fa-backward"></i></div>
+                <div onclick="skipPre()"><i class="fa-solid fa-backward" id="ctrlPre"></i></div>
                 <div onclick="playPause()"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
-                <div><i class="fa-solid fa-forward"></i></div>
+                <div onclick="skipNext()"><i class="fa-solid fa-forward" id="ctrlNext"></i></div>
             </div>
         </div>
 
@@ -46,6 +48,8 @@
         let progress = document.getElementById("progress");
         let song = document.getElementById("song");
         let ctrlIcon = document.getElementById("ctrlIcon")
+        let ctrlPre = document.getElementById("ctrlPre")
+        let ctrlNext = document.getElementById("ctrlNext")
 
         song.onloadedmetadata = function (){
             progress.max = song.duration;
@@ -64,8 +68,9 @@
                 ctrlIcon.classList.remove("fa-play")
             }
         }
+        // console.log(!song.paused)
 
-        if(song.play())
+        if(!song.paused)
         {
             setInterval(()=>{
                 progress.value = song.currentTime;
@@ -77,6 +82,16 @@
             song.currentTime = progress.value;
             ctrlIcon.classList.add("fa-pause")
             ctrlIcon.classList.remove("fa-play")
+        }
+
+        function skipPre(){
+            progress.value= Math.max(0,song.currentTime-5);
+            song.currentTime=progress.value;
+        }
+
+        function skipNext(){
+            progress.value = Math.min(song.duration,song.currentTime+5);
+            song.currentTime=progress.value;
         }
     </script>
 </body>
